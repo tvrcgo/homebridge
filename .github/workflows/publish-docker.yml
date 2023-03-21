@@ -1,0 +1,23 @@
+
+name: Publish image
+
+on:
+  push:
+    paths:
+      - '.homebridge/**'
+      - '.github/workflows/publish-docker.yml'
+  workflow_dispatch:
+
+jobs:
+  push-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Build and push image
+        uses: tvrcgo/deploy-to-docker@master
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: ${{ secrets.DOCKER_REPO }}
